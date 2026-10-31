@@ -1,10 +1,7 @@
-# [Zap](https://Sam3360.github.io/Zap/UserPolicyZap.html)  ⚡ [Latest version - Now Phone Compatible]
+# [Zap](https://Sam3360.github.io/Zap/UserPolicyZap.html)  ⚡ [Latest version - *BETA*]
 
 
-> NOTE: Latest version is [https://Sam3360.github.io/Zap_v3](https://Sam3360.github.io/Zap_v3)
-
-
-> It will soon be merged into this repo but till then for latest features please refer to above link
+> NOTE: Latest stable version is [https://Sam3360.github.io/Zap_v4](https://Sam3360.github.io/Zap_v4)
 
 
 ![Zap Banner](ZapBanner.png)
