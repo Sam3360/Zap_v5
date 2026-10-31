@@ -1,7 +1,8 @@
-# [Zap](https://Sam3360.github.io/Zap/UserPolicyZap.html)  ⚡ [Latest version - *BETA*]
+# [Zap](https://Sam3360.github.io/Zap/UserPolicyZap.html)  ⚡
 
 
-> NOTE: Latest stable version is [https://Sam3360.github.io/Zap_v4](https://Sam3360.github.io/Zap_v4)
+> All changes are merged into the OG repo Zap
+> You may use the application as normal using url [https://Sam3360.github.io/Zap](https://Sam3360.github.io/Zap)
 
 
 ![Zap Banner](ZapBanner.png)
