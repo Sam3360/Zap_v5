@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚡ Zap — Sign In</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080e1a;--card:rgba(26,37,64,0.75);
+  --border:rgba(59,130,246,0.18);--accent:#3b82f6;--accent2:#6366f1;--accent3:#06b6d4;
+  --text:#f1f5f9;--text2:#94a3b8;--muted:#475569;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
+
+/* BG */
+.bg{position:fixed;inset:0;z-index:0}
+.bg-mesh{
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 5%, rgba(59,130,246,0.14) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 80% at 85% 85%, rgba(99,102,241,0.12) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 55% 30%, rgba(6,182,212,0.07) 0%,transparent 50%),
+    #080e1a;
+}
+.grid{
+  position:fixed;inset:0;
+  background-image:linear-gradient(rgba(59,130,246,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,0.035) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:gridDrift 25s linear infinite;
+}
+@keyframes gridDrift{to{background-position:0 48px}}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);z-index:0;animation:orbf 9s ease-in-out infinite}
+.o1{width:500px;height:500px;background:rgba(59,130,246,0.1);top:-150px;left:-150px;animation-delay:0s}
+.o2{width:350px;height:350px;background:rgba(99,102,241,0.09);bottom:-100px;right:-100px;animation-delay:-3.5s}
+.o3{width:250px;height:250px;background:rgba(6,182,212,0.07);top:40%;left:55%;animation-delay:-6s}
+@keyframes orbf{0%,100%{transform:translate(0,0)}33%{transform:translate(25px,-20px)}66%{transform:translate(-15px,18px)}}
+
+/* PARTICLES */
+.particles{position:fixed;inset:0;z-index:0;overflow:hidden}
+.particle{
+  position:absolute;width:2px;height:2px;border-radius:50%;
+  background:rgba(59,130,246,0.4);animation:pf linear infinite;
+}
+@keyframes pf{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10px) scale(1);opacity:0}}
+
+/* PAGE */
+.page{position:relative;z-index:10;height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* CARD */
+.card{
+  background:var(--card);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border:1px solid var(--border);border-radius:28px;
+  padding:52px 44px;width:100%;max-width:440px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.04) inset;
+  animation:cardIn 0.9s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(50px) scale(0.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* LOGO */
+.logo{text-align:center;margin-bottom:38px}
+.bolt{font-size:58px;display:block;line-height:1;margin-bottom:10px;
+  animation:boltGlow 2.5s ease-in-out infinite;cursor:default;user-select:none}
+@keyframes boltGlow{
+  0%,100%{filter:drop-shadow(0 0 16px rgba(59,130,246,0.6)) drop-shadow(0 0 32px rgba(59,130,246,0.3))}
+  50%{filter:drop-shadow(0 0 28px rgba(99,102,241,0.9)) drop-shadow(0 0 56px rgba(99,102,241,0.4))}
+}
+.wordmark{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;letter-spacing:-1.5px;
+  background:linear-gradient(135deg,#60a5fa 0%,#818cf8 50%,#06b6d4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tagline{font-size:13px;color:var(--text2);margin-top:7px;letter-spacing:0.3px}
+
+/* FORM */
+.field{margin-bottom:18px}
+.label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--text2);margin-bottom:8px}
+.input{
+  width:100%;background:rgba(8,14,26,0.7);border:1px solid rgba(59,130,246,0.18);
+  border-radius:12px;padding:14px 16px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:all 0.2s;
+}
+.input::placeholder{color:var(--muted)}
+.input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,0.14);background:rgba(8,14,26,0.9)}
+.input.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,0.12)}
+
+/* DIVIDER */
+.div{display:flex;align-items:center;gap:12px;margin:22px 0}
+.div-line{flex:1;height:1px;background:rgba(148,163,184,0.12)}
+.div-txt{font-size:12px;color:var(--muted)}
+
+/* GOOGLE BTN */
+.gbtn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(135deg,#3b82f6,#6366f1);
+  color:#fff;border:none;border-radius:14px;padding:16px 20px;
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all 0.25s;
+  box-shadow:0 8px 32px rgba(59,130,246,0.38);
+  position:relative;overflow:hidden;letter-spacing:0.2px;
+}
+.gbtn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent);
+  opacity:0;transition:opacity 0.2s}
+.gbtn:hover{transform:translateY(-2px);box-shadow:0 12px 44px rgba(59,130,246,0.5)}
+.gbtn:hover::before{opacity:1}
+.gbtn:active{transform:translateY(0);box-shadow:0 6px 24px rgba(59,130,246,0.35)}
+.gbtn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.gicon{width:20px;height:20px;flex-shrink:0}
+.spin{width:17px;height:17px;border:2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STATUS */
+.status{margin-top:14px;text-align:center;font-size:13px;min-height:20px;transition:all 0.3s}
+.status.err{color:#f87171}.status.ok{color:#34d399}.status.info{color:var(--accent3)}
+
+/* CHIPS */
+.chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.chip{background:rgba(59,130,246,0.09);border:1px solid rgba(59,130,246,0.2);
+  border-radius:20px;padding:4px 12px;font-size:11px;color:#93c5fd;font-weight:500}
+
+/* FOOTER */
+.foot{text-align:center;margin-top:24px;font-size:11px;color:var(--muted)}
+
+/* INSTALL BANNER */
+.install-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(26,37,64,0.95);border-top:1px solid rgba(59,130,246,0.2);
+  backdrop-filter:blur(20px);padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.install-bar.hidden{display:none}
+.install-text{flex:1;font-size:13px;color:var(--text2)}
+.install-text strong{color:var(--text);display:block;margin-bottom:2px}
+.install-btn{background:var(--accent);border:none;border-radius:10px;
+  padding:9px 16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s}
+.install-btn:hover{background:#2563eb}
+.install-dismiss{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px}
+
+@media(max-width:480px){
+  .card{padding:36px 22px;border-radius:22px}
+  .bolt{font-size:46px}
+  .wordmark{font-size:30px}
+}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+<div class="particles" id="particles"></div>
+
+<div class="page">
+  <div class="card">
+    <div class="logo">
+      <span class="bolt">⚡</span>
+      <div class="wordmark">Zap</div>
+      <div class="tagline">Lightning-fast messaging for everyone</div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="uname">Pick a username</label>
+      <input class="input" type="text" id="uname" placeholder="e.g. cooldev42" maxlength="24" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    </div>
+
+    <div class="div">
+      <div class="div-line"></div>
+      <span class="div-txt">then sign in with</span>
+      <div class="div-line"></div>
+    </div>
+
+    <button class="gbtn" id="gBtn" onclick="signIn()">
+      <svg class="gicon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="rgba(255,255,255,0.95)" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="rgba(255,255,255,0.85)" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="rgba(255,255,255,0.75)" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="rgba(255,255,255,0.9)" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      <span id="btnTxt">Continue with Google</span>
+      <div class="spin" id="spin"></div>
+    </button>
+
+    <div class="status" id="statusMsg"></div>
+
+    <div class="chips">
+      <span class="chip">⚡ Real-time</span>
+      <span class="chip">🔒 Secure</span>
+      <span class="chip">💬 Rooms</span>
+      <span class="chip">📱 PWA</span>
+      <span class="chip">🎤 Voice</span>
+      <span class="chip">📌 Pin</span>
+      <span class="chip">↩️ Reply</span>
+      <span class="chip">🌙 Dark Mode</span>
+    </div>
+
+    <div class="foot">⚡ Zap · Made with ❤️ · v2.0</div>
+  </div>
+</div>
+
+<!-- PWA install banner -->
+<div class="install-bar hidden" id="installBar">
+  <span style="font-size:28px">⚡</span>
+  <div class="install-text">
+    <strong>Install ⚡ Zap</strong>
+    Add to your home screen for the best experience
+  </div>
+  <button class="install-btn" onclick="doInstall()">Install</button>
+  <button class="install-dismiss" onclick="document.getElementById('installBar').classList.add('hidden')">✕</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyDeQip7FvQDyiSdiBjNlCJc9MT5fVQcnCc",
+  authDomain:"login-21af0.firebaseapp.com",
+  projectId:"login-21af0",
+  storageBucket:"login-21af0.appspot.com",
+  messagingSenderId:"121751642387",
+  appId:"1:121751642387:web:6e83c8f559dfb51f0dbae6"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Particles
+const pc = document.getElementById('particles');
+for (let i=0;i<18;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.left=Math.random()*100+'%';
+  p.style.animationDuration=(8+Math.random()*12)+'s';
+  p.style.animationDelay=(Math.random()*12)+'s';
+  p.style.width=p.style.height=(1+Math.random()*2.5)+'px';
+  p.style.opacity=0.2+Math.random()*0.5;
+  pc.appendChild(p);
+}
+
+const setStatus=(msg,type='')=>{
+  const el=document.getElementById('statusMsg');
+  el.textContent=msg; el.className='status '+type;
+};
+const setLoading=on=>{
+  document.getElementById('gBtn').disabled=on;
+  document.getElementById('spin').style.display=on?'block':'none';
+  document.getElementById('btnTxt').textContent=on?'Signing in…':'Continue with Google';
+};
+
+// Already signed in?
+onAuthStateChanged(auth, async user=>{
+  if (user){
+    const snap=await getDoc(doc(db,'users',user.uid));
+    if (snap.exists()) { location.href='dashboard.html'; }
+  }
+});
+
+window.signIn=async()=>{
+  const uname=document.getElementById('uname').value.trim();
+  const inp=document.getElementById('uname');
+  if (!uname){ inp.classList.add('err'); setStatus('⚠️ Enter a username first.','err'); inp.focus(); return; }
+  if (!/^[a-zA-Z0-9_]{3,24}$/.test(uname)){ inp.classList.add('err'); setStatus('⚠️ 3–24 chars, letters/numbers/underscore only.','err'); return; }
+  inp.classList.remove('err');
+  setLoading(true); setStatus('Opening Google sign-in…','info');
+  try{
+    const provider=new GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    const result=await signInWithPopup(auth,provider);
+    const user=result.user;
+    setStatus('✅ Signed in! Setting up your profile…','ok');
+    const ref=doc(db,'users',user.uid);
+    const snap=await getDoc(ref);
+    await setDoc(ref,{
+      uid:user.uid,
+      username: snap.exists()?snap.data().username:uname,
+      displayName:user.displayName||uname,
+      email:user.email,
+      photoURL:user.photoURL||'',
+      online:true,
+      status:'online',
+      lastSeen:serverTimestamp(),
+      createdAt: snap.exists()?snap.data().createdAt:serverTimestamp(),
+    },{merge:true});
+    location.href='dashboard.html';
+  }catch(err){
+    setLoading(false);
+    if (err.code==='auth/popup-closed-by-user') setStatus('Sign-in cancelled.','err');
+    else if (err.code==='auth/popup-blocked') setStatus('⚠️ Popups blocked. Allow them for this site.','err');
+    else if (err.code==='auth/unauthorized-domain') setStatus('⚠️ Add '+location.hostname+' in Firebase → Authentication → Settings → Authorized domains.','err');
+    else setStatus('Error: '+err.message,'err');
+  }
+};
+
+// Enter key
+document.getElementById('uname').addEventListener('keydown',e=>{ if(e.key==='Enter') window.signIn(); });
+
+// PWA install
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('installBar').classList.remove('hidden');
+});
+window.doInstall=async()=>{
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  document.getElementById('installBar').classList.add('hidden');
+};
+
+// SW
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('firebase-messaging-sw.js').catch(()=>{});
+</script>
+</body>
+</html>
